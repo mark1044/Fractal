@@ -1,0 +1,79 @@
+%Three roots of f(z) = z^3 -1
+% z = 1, z = exp[ 2*pi/3 * i], z = exp[ 4*pi/3 * i ]
+% we consider the basin of attraction on the interval -1 =< Re(z) =< 1, -1 =< Im(z) =< 1
+
+epsi = 1/10000;
+xmin = -1;
+xmax = 1;
+ymin = -1;
+ymax = 1;
+
+%interval size
+% ******* PLEASE INCREASE INTERVAL SIZE FOR THE SAKE OF TIME,UNLESS YOU CAN WAIT AND SEE THE COOL FRACTAL 
+deltX = 2/100;
+
+
+
+
+scatter(0,0,1,'white','k');
+hold;
+title('basins of bttraction => z^{3} - 1 = 0');
+xlabel('real(z) in [-1,1]');
+ylabel('img(z) in [-1,1]');
+
+  
+%roots of unity
+rOne = 1;
+rTwo = -1/2 + sqrt(-3)/2;
+rThree = -1/2 - sqrt(-3)/2;
+
+%considers the coordinates to be tested
+%as we span through each point of the grid produced by the for loops
+%we test whether the point converges to any of the roots of unity
+for i=xmin:deltX:xmax
+    for j=ymin:deltX:ymax
+      
+        %point on grid
+        z = i + j*sqrt(-1);
+        %keeps track of the sequences 
+        basin = z;
+        lock = 0;
+        limit = 1;
+        while lock == 0
+        
+            %iteration of newtons method 
+            basin = basin - (basin^3 - 1)/(3*basin^2);
+            %checks whether the sequence converged or not
+                if limit < 100
+           
+                    
+                    if abs(basin - rOne) < epsi
+                        disp('plotted basin');
+                        scatter(i,j,20,'s','r','filled');
+                        lock = 1;
+                    elseif abs(basin - rTwo) < epsi
+                        disp('plotted basin');
+                        scatter(i,j,20,'s','b','filled');
+                        lock = 1;
+                    elseif abs(basin - rThree) < epsi
+                        disp('plotted basin');
+                        scatter(i,j,20,'s','y','filled');
+                        lock = 1;
+                    end
+        
+               limit = limit + 1;
+                
+               %if the sequence does not converge
+                else
+                   disp('plotted basin');
+                   scatter(i,j,20,'s','k','filled');
+                   lock = 1;
+                end
+        
+        
+        end
+    end
+end
+
+          %# 50 random points
+%polar(p(:,1), p(:,2), 'r.')
